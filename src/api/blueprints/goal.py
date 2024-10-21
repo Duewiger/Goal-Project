@@ -15,7 +15,7 @@ def index():
         cursor.execute("SELECT * FROM goal_history")
         goal_history = cursor.fetchall()
 
-    return render_template("goal/goal_index.html.j2", goals=goals, goal_history=goal_history)
+    return render_template("index.html.j2", goals=goals, goal_history=goal_history)
 
 @bp.route("/create", methods=("GET", "POST"))
 def create():

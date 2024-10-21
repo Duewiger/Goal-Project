@@ -36,15 +36,14 @@ function handleSave(event) {
     }
 }
 
-// Chart.js initialisieren
 const ctx = document.getElementById('goalChart').getContext('2d');
 const goalChart = new Chart(ctx, {
-    type: 'line', // Typ des Diagramms
+    type: 'line',
     data: {
-        labels: [], // Labels für die X-Achse
+        labels: [],
         datasets: [{
             label: 'Ziele',
-            data: [], // Daten für die Y-Achse
+            data: [],
             borderColor: 'rgba(75, 192, 192, 1)',
             borderWidth: 1,
             fill: false,
@@ -60,16 +59,14 @@ const goalChart = new Chart(ctx, {
     }
 });
 
-// Funktion zum Befüllen des Charts mit Daten aus der goal_history
 function populateChart(goalHistory) {
     goalHistory.forEach(entry => {
-        goalChart.data.labels.push(entry.modified_date); // Datum für die X-Achse hinzufügen
-        goalChart.data.datasets[0].data.push(entry.rating); // Bewertung für die Y-Achse hinzufügen
+        goalChart.data.labels.push(entry.modified_date);
+        goalChart.data.datasets[0].data.push(entry.rating);
     });
-    goalChart.update(); // Diagramm aktualisieren
+    goalChart.update();
 }
 
-// Abrufen der Daten für das Chart und befüllen
 fetch('/goal/api/goal_history')
     .then(response => response.json())
     .then(data => {

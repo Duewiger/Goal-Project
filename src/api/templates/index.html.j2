@@ -4,6 +4,7 @@
 
 {% block head %}
 {{ super() }}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 {% endblock %}
 
 {% block content %}
@@ -11,7 +12,15 @@
     <h1>{{ title if title else "TEXSIB - 10x Goals-Project" }}</h1>
 </div>
 <div class="goal-list">
-    <!-- Hier wird die Liste der Ziele angezeigt -->
+    {% for goal in goals %}
+    <div class="goal-item">
+        <h2>{{ goal['statement'] }}</h2>
+        <p>Abteilung: {{ goal['department'] }}</p>
+        <p>Kriterien: {{ goal['criteria'] }}</p>
+        <p>Bewertung: {{ goal['rating'] }}</p>
+        <p>Letzte Änderung: {{ goal['last_modified'] }}</p>
+    </div>
+    {% endfor %}
 </div>
 <div class="graph-container">
     <canvas id="goalChart"></canvas>
@@ -20,5 +29,33 @@
 
 {% block javascript %}
 {{ super() }}
-<script type="text/javascript" src="{{ url_for('static', filename='js/index.js') }}"></script>
+<script type="text/javascript">
+    const goalHistory = {{ goal_history | tojson }};
+    const labels = goalHistory.map(entry => entry['modified_date']);
+    const ratings = goalHistory.map(entry => entry['rating']);
+
+    const ctx = document.getElementById('goalChart').getContext('2d');
+    const goalChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Bewertung über die Zeit',
+                data: ratings,
+                borderColor: 'rgba(221, 11, 47, 1)',
+                backgroundColor: 'rgba(221, 11, 47, 0.2)',
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    max: 10
+                }
+            }
+        }
+    });
+</script>
 {% endblock %}

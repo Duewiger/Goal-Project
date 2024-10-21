@@ -40,3 +40,7 @@ CREATE TABLE IF NOT EXISTS notifications (
   action VARCHAR(255) NOT NULL,
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+
+INSERT INTO notifications (id, table_name, action) VALUES ('your-uuid', 'goals', 'create');
+INSERT INTO goal_history (id, goal_id, rating, assessment, modified_by) VALUES ('your-uuid', 'goal-id', 8, 'Good job', 'user-id');
