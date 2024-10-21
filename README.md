@@ -25,8 +25,11 @@ Dies ist ein Flask-basiertes Webprojekt zur Verwaltung von Zielen. Benutzer kön
    Stellen Sie sicher, dass Ihre Datenbank konfiguriert ist und die entsprechenden Tabellen existieren. Sie können das SQL-Schema in `schema.sql` finden.
 
 4. **Umgebung einrichten:**
-   Legen Sie Ihre Umgebungsvariablen fest, falls erforderlich.
-
+   Legen Sie Ihre Umgebungsvariablen fest, falls erforderlich und initialisieren sie die Datenbank:
+   ```bash
+   flask --app src/api/app.py init-db
+   ```
+   
 5. **Die Anwendung starten:**
    ```bash
    pipenv run python -m src.api.app
