@@ -21,4 +21,4 @@ instance/
 # Environment Variables
 .env
 
-stuff/
+./stuff
