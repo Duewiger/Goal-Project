@@ -1,0 +1,31 @@
+Table goal {
+  id integer [primary key]
+  department varchar
+  statement varchar
+  criteria text
+  rating integer [note: 'Rating from 1 to 10']
+  assessment text [note: 'Written assessment of the goal']
+  last_modified timestamp
+  last_modified_by integer
+  comments text [note: 'Comments or suggestions from other leaders']
+}
+
+Table user {
+  id integer [primary key]
+  username varchar
+  role varchar
+  created_at timestamp
+}
+
+Table goal_history {
+  id integer [primary key]
+  goal_id integer
+  rating integer [note: 'Rating from 1 to 10']
+  assessment text [note: 'Written assessment for this change']
+  modified_by integer
+  modified_date timestamp
+}
+
+Ref: goal.last_modified_by > user.id // many-to-one
+Ref: goal_history.goal_id > goal.id // many-to-one
+Ref: goal_history.modified_by > user.id // many-to-one

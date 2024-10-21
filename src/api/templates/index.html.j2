@@ -1,0 +1,25 @@
+{% extends "base.html.j2" %}
+
+{% block title %} {{ title if title else "Project Name" }} {% endblock %}
+
+{% block head %}
+{{ super() }}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/index.css') }}" />
+{% endblock %}
+
+{% block content %}
+<div class="header">
+    <h1>{{ title if title else "TEXSIB - 10x Goals-Project" }}</h1>
+</div>
+<div class="goal-list">
+    <!-- Hier wird die Liste der Ziele angezeigt -->
+</div>
+<div class="graph-container">
+    <canvas id="goalChart"></canvas>
+</div>
+{% endblock %}
+
+{% block javascript %}
+{{ super() }}
+<script type="text/javascript" src="{{ url_for('static', filename='js/index.js') }}"></script>
+{% endblock %}

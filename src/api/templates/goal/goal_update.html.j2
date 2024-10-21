@@ -1,0 +1,27 @@
+{% extends "base.html.j2" %}
+
+{% block title %} Ziel bearbeiten {% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Ziel bearbeiten</h2>
+    <form method="POST" action="{{ url_for('goal.update', goal_id=goal.id) }}">
+        <label for="department">Abteilung</label>
+        <input type="text" name="department" value="{{ goal.department }}" required>
+        
+        <label for="statement">Aussage</label>
+        <textarea name="statement" required>{{ goal.statement }}</textarea>
+        
+        <label for="criteria">Kriterien</label>
+        <textarea name="criteria" required>{{ goal.criteria }}</textarea>
+        
+        <label for="rating">Bewertung (1-10)</label>
+        <input type="number" name="rating" min="1" max="10" value="{{ goal.rating }}" required>
+        
+        <label for="assessment">Einschätzung</label>
+        <textarea name="assessment" required>{{ goal.assessment }}</textarea>
+        
+        <button type="submit">Aktualisieren</button>
+    </form>
+</div>
+{% endblock %}

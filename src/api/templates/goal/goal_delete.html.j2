@@ -1,0 +1,12 @@
+{% extends "base.html.j2" %}
+
+{% block title %}Ziel löschen{% endblock %}
+
+{% block content %}
+<h2>Ziel löschen</h2>
+<p>Möchten Sie das Ziel wirklich löschen?</p>
+<form method="post" action="{{ url_for('goal.delete', goal_id=goal_id) }}" onsubmit="handleDelete(event)">
+    <button type="submit">Ja, löschen</button>
+    <a href="{{ url_for('goal.index') }}">Abbrechen</a>
+</form>
+{% endblock %}

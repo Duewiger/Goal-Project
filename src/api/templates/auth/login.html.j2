@@ -1,0 +1,19 @@
+{% extends "base.html.j2" %}
+
+{% block title %} Anmelden {% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Anmelden</h2>
+    <form method="POST" action="{{ url_for('auth.login') }}">
+        <label for="username">Benutzername</label>
+        <input type="text" name="username" required>
+        
+        <label for="password">Passwort</label>
+        <input type="password" name="password" required>
+        
+        <button type="submit">Anmelden</button>
+    </form>
+    <p>Noch keinen Account? <a href="{{ url_for('auth.register') }}">Registrieren</a></p>
+</div>
+{% endblock %}

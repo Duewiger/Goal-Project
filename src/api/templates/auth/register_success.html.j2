@@ -1,0 +1,8 @@
+{% extends "base.html.j2" %}
+
+{% block title %}Registrierung erfolgreich{% endblock %}
+
+{% block content %}
+    <h1>Registrierung erfolgreich</h1>
+    <p>Ihre Registrierung war erfolgreich. Sie können sich jetzt <a href="{{ url_for('auth.login') }}">Anmelden</a>.</p>
+{% endblock %}
