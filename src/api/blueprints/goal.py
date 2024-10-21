@@ -11,7 +11,6 @@ def index():
         cursor.execute("SELECT * FROM goals")
         goals = cursor.fetchall()
 
-    # Abrufen der goal_history-Daten
     with db.cursor() as cursor:
         cursor.execute("SELECT * FROM goal_history")
         goal_history = cursor.fetchall()
@@ -30,9 +29,9 @@ def create():
         rating = request.form["rating"]
         assessment = request.form["assessment"]
         last_modified_by = g.user["id"]
-        
+
         error = None
-        
+
         if not department:
             error = "Department is required."
         elif not statement:
@@ -49,32 +48,34 @@ def create():
         else:
             goal_id = str(uuid.uuid4())
             db = get_db()
-            with db.cursor() as cursor:
-                cursor.execute(
-                    """
-                    INSERT INTO goals (id, department, statement, criteria, rating, assessment, last_modified_by)
-                    VALUES (%s, %s, %s, %s, %s, %s, %s)
-                    """,
-                    (goal_id, department, statement, criteria, int(rating), assessment, last_modified_by),
-                )
-                db.commit()
+            try:
+                with db.cursor() as cursor:
+                    cursor.execute(
+                        """
+                        INSERT INTO goals (id, department, statement, criteria, rating, assessment, last_modified_by)
+                        VALUES (%s, %s, %s, %s, %s, %s, %s)
+                        """,
+                        (goal_id, department, statement, criteria, int(rating), assessment, last_modified_by),
+                    )
+                    db.commit()
 
-            # Eintrag in notifications
-            with db.cursor() as cursor:
-                cursor.execute(
-                    "INSERT INTO notifications (id, table_name, action) VALUES (%s, %s, %s)",
-                    (str(uuid.uuid4()), 'goals', 'create')
-                )
+                with db.cursor() as cursor:
+                    cursor.execute(
+                        "INSERT INTO notifications (id, table_name, action) VALUES (%s, %s, %s)",
+                        (str(uuid.uuid4()), 'goals', 'create')
+                    )
 
-            # Eintrag in goal_history
-            with db.cursor() as cursor:
-                cursor.execute(
-                    "INSERT INTO goal_history (id, goal_id, rating, assessment, modified_by) VALUES (%s, %s, %s, %s, %s)",
-                    (str(uuid.uuid4()), goal_id, int(rating), assessment, last_modified_by)
-                )
+                with db.cursor() as cursor:
+                    cursor.execute(
+                        "INSERT INTO goal_history (id, goal_id, rating, assessment, modified_by) VALUES (%s, %s, %s, %s, %s)",
+                        (str(uuid.uuid4()), goal_id, int(rating), assessment, last_modified_by)
+                    )
 
-            flash("Goal created successfully.")
-            return redirect(url_for("goal.index"))
+                flash("Goal created successfully.")
+                return redirect(url_for("goal.index"))
+            except Exception as e:
+                flash(f"Error creating goal: {str(e)}")
+                db.rollback()
 
     return render_template("goal/goal_create.html.j2")
 
@@ -110,29 +111,31 @@ def update(goal_id):
             set_clause = ", ".join([f"{key} = %s" for key in changes.keys()])
             values = list(changes.values()) + [goal_id]
 
-            with db.cursor() as cursor:
-                cursor.execute(
-                    f"UPDATE goals SET {set_clause} WHERE id = %s",
-                    values
-                )
-                db.commit()
+            try:
+                with db.cursor() as cursor:
+                    cursor.execute(
+                        f"UPDATE goals SET {set_clause} WHERE id = %s",
+                        values
+                    )
+                    db.commit()
 
-                # Eintrag in notifications
                 with db.cursor() as cursor:
                     cursor.execute(
                         "INSERT INTO notifications (id, table_name, action) VALUES (%s, %s, %s)",
                         (str(uuid.uuid4()), 'goals', 'update')
                     )
 
-                # Eintrag in goal_history
                 with db.cursor() as cursor:
                     cursor.execute(
                         "INSERT INTO goal_history (id, goal_id, rating, assessment, modified_by) VALUES (%s, %s, %s, %s, %s)",
                         (str(uuid.uuid4()), goal_id, int(new_data["rating"]), new_data["assessment"], g.user["id"])
                     )
 
-            flash("Goal updated successfully.")
-            return redirect(url_for("goal.index"))
+                flash("Goal updated successfully.")
+                return redirect(url_for("goal.index"))
+            except Exception as e:
+                flash(f"Error updating goal: {str(e)}")
+                db.rollback()
 
     return render_template("goal/goal_update.html.j2", goal=goal)
 
@@ -149,19 +152,23 @@ def delete(goal_id):
     if goal is None:
         flash("Goal not found.")
     else:
-        with db.cursor() as cursor:
-            cursor.execute("DELETE FROM goals WHERE id = %s", (goal_id,))
-            db.commit()
-
-            # Eintrag in notifications
+        try:
             with db.cursor() as cursor:
-                cursor.execute(
-                    "INSERT INTO notifications (id, table_name, action) VALUES (%s, %s, %s)",
-                    (str(uuid.uuid4()), 'goals', 'delete')
-                )
+                cursor.execute("DELETE FROM goals WHERE id = %s", (goal_id,))
+                db.commit()
+
+                with db.cursor() as cursor:
+                    cursor.execute(
+                        "INSERT INTO notifications (id, table_name, action) VALUES (%s, %s, %s)",
+                        (str(uuid.uuid4()), 'goals', 'delete')
+                    )
+
+            flash("Goal deleted successfully.")
+        except Exception as e:
+            flash(f"Error deleting goal: {str(e)}")
+            db.rollback()
 
     return redirect(url_for("goal.index"))
-
 
 @bp.route("/api/goal_history")
 def api_goal_history():
@@ -170,5 +177,4 @@ def api_goal_history():
         cursor.execute("SELECT * FROM goal_history")
         goal_history = cursor.fetchall()
     
-    # Rückgabe der Daten als JSON
     return {"goal_history": goal_history}

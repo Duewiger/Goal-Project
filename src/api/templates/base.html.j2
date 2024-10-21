@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/base.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/index.css') }}" />
     <link rel="shortcut icon" href="/static/images/favicon.png" type="image/png">
     <script type="text/javascript" src="{{ url_for('static', filename='libraries/JQuery/jquery-3.5.1.min.js') }}"></script>
     <title>{% block title %}{% endblock %}</title>
@@ -25,9 +26,11 @@
             <li><a href="{{ url_for('goal.index') }}">Ziele</a></li>
         </ul>
     </nav>
-    <div id="content">
-        {% block content %} {% endblock %}
-    </div>
+    <main>
+        <div id="content">
+            {% block content %} {% endblock %}
+        </div>
+    </main>
 </body>
 
 {% block javascript %}
