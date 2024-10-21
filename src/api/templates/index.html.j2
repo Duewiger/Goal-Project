@@ -26,36 +26,3 @@
     <canvas id="goalChart"></canvas>
 </div>
 {% endblock %}
-
-{% block javascript %}
-{{ super() }}
-<script type="text/javascript">
-    const goalHistory = {{ goal_history | tojson }};
-    const labels = goalHistory.map(entry => entry['modified_date']);
-    const ratings = goalHistory.map(entry => entry['rating']);
-
-    const ctx = document.getElementById('goalChart').getContext('2d');
-    const goalChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: labels,
-            datasets: [{
-                label: 'Bewertung über die Zeit',
-                data: ratings,
-                borderColor: 'rgba(221, 11, 47, 1)',
-                backgroundColor: 'rgba(221, 11, 47, 0.2)',
-                borderWidth: 2
-            }]
-        },
-        options: {
-            responsive: true,
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    max: 10
-                }
-            }
-        }
-    });
-</script>
-{% endblock %}

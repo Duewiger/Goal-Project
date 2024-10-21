@@ -1,50 +1,55 @@
-In diesem File können alle wichtigen Hinweise zum Projekt gesammelt werden.
-Es wird bei github automatisch auf der Projektseite mit angezeigt.
+# TEXSIB - 10x Goals Project
 
-Starten der virtuellen Umgebung:
-pipenv install
+## Übersicht
 
-Anpassen der Konfig für die Datenbank
-src/api/app.ini
+Dies ist ein Flask-basiertes Webprojekt zur Verwaltung von Zielen. Benutzer können Ziele erstellen, aktualisieren und löschen, und die Anwendung bietet auch eine Visualisierung der Ziele in Form von Charts.
 
-Starten des Servers:
-pipenv run python -m src.api.app
+## Anforderungen
 
+- Python 3.11.7
+- Pipenv
 
-Für die Teamarbeit sind einige Konventionen gut:
-- das Projekt immer innerhalb eine virtuellen Umgebung wie pipenv ausführen
-    - alle Projektanhängigkeiten über pipenv install installieren
-- in Python nutzt man Snakecase also alles klein mit Unterstrichen getrennt
-- Funktions-/ Variablen-/ Routennamen sollten Aufschluss über den Nutzen haben
-    - z.B. /view/ für alle Endpunkte mit einer Ansicht
-    oder /data/ für Datenverarbeitung
-- Datenbank Tabllen im Plural Spalten im Singular
-- Kommentare nutzen um Aktionen zu erklären (EN / DE)
+## Installation
 
+1. **Klonen Sie das Repository:**
+   ```bash
+   git clone https://github.com/Duewiger/Goal-Project.git
+   ```
 
-Um ein Projekt als Service anzumelden und so bei jedem start der VM mitstarten oder neu Änderung neustarten   
-  
-cd /etc/systemd/system
-sudo nano project_name.service
-[Unit]
-Description=project_name
-After=network.target
-StartLimitIntervalSec=0
+2. **Installieren Sie die Abhängigkeiten:**
+   ```bash
+   pipenv install
+   ```
 
-[Service]
-Type=exec
-Restart=always
-RestartSec=1
-User=service
-ExecStart=sh /home/service/project_name/startup.sh
+3. **Datenbank einrichten:**
+   Stellen Sie sicher, dass Ihre Datenbank konfiguriert ist und die entsprechenden Tabellen existieren. Sie können das SQL-Schema in `schema.sql` finden.
 
-[Install]
-WantedBy=multi-user.target
+4. **Umgebung einrichten:**
+   Legen Sie Ihre Umgebungsvariablen fest, falls erforderlich.
 
+5. **Die Anwendung starten:**
+   ```bash
+   pipenv run python -m src.api.app
+   ```
 
-sudo systemctl enable project_name.service
-sudo systemctl start project_name.service
+## Benutzung
 
-sudo systemctl restart project_name.service
+- **Ziele verwalten:** Nach dem Einloggen können Sie Ziele erstellen, aktualisieren und löschen.
+- **Charts anzeigen:** Die Anwendung zeigt die Ziele in einer übersichtlichen Darstellung an.
 
-Immer an das Anlegen der Datenbank denken!
+## Hinweise
+
+- Verwenden Sie die Datei `startup.sh`, um die Anwendung in einer Produktionsumgebung mit Gunicorn zu starten:
+   ```bash
+   ./startup.sh
+   ```
+- Die Skripte `server.crt` und `server.key` in den `Keys`-Ordnern ermöglichen HTTPS, wenn sie in `startup.sh` aktiviert werden.
+
+## Lizenz
+Dieses Projekt ist unter der MIT-Lizenz lizenziert - siehe die [LICENSE](LICENSE) Datei für Details.
+
+### Zusammenfassung
+
+1. **Pipfile:** Überprüfen und gegebenenfalls spezifischere Versionen verwenden.
+2. **README.md:** Die bereitgestellte Anleitung ermöglicht es Ihrem Vorgesetzten, das Projekt einfach zu installieren und auszuführen.
+3. **Startup-Script:** Überprüfen Sie die Berechtigungen und stellen Sie sicher, dass es korrekt funktioniert.

@@ -4,18 +4,14 @@ import uuid
 
 bp = Blueprint("goal", __name__, url_prefix="/goal")
 
-@bp.route("/")
+@bp.route("/", methods=["GET"])
 def index():
     db = get_db()
     with db.cursor() as cursor:
         cursor.execute("SELECT * FROM goals")
         goals = cursor.fetchall()
 
-    with db.cursor() as cursor:
-        cursor.execute("SELECT * FROM goal_history")
-        goal_history = cursor.fetchall()
-
-    return render_template("index.html.j2", goals=goals, goal_history=goal_history)
+    return render_template("goal/goal_index.html.j2", goals=goals)
 
 @bp.route("/create", methods=("GET", "POST"))
 def create():
