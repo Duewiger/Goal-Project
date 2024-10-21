@@ -50,9 +50,3 @@ Dies ist ein Flask-basiertes Webprojekt zur Verwaltung von Zielen. Benutzer kön
 
 ## Lizenz
 Dieses Projekt ist unter der MIT-Lizenz lizenziert - siehe die [LICENSE](LICENSE) Datei für Details.
-
-### Zusammenfassung
-
-1. **Pipfile:** Überprüfen und gegebenenfalls spezifischere Versionen verwenden.
-2. **README.md:** Die bereitgestellte Anleitung ermöglicht es Ihrem Vorgesetzten, das Projekt einfach zu installieren und auszuführen.
-3. **Startup-Script:** Überprüfen Sie die Berechtigungen und stellen Sie sicher, dass es korrekt funktioniert.
