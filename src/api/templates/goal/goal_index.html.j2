@@ -3,37 +3,41 @@
 {% block title %}Ziele Übersicht{% endblock %}
 
 {% block content %}
-    <h1>Ziele Übersicht</h1>
-    <a href="{{ url_for('goal.create') }}" class="btn btn-primary">Neues Ziel anlegen</a>
-    <table>
-        <thead>
-            <tr>
-                <th>Abteilung</th>
-                <th>Aussage</th>
-                <th>Kriterien</th>
-                <th>Bewertung</th>
-                <th>Letzte Änderung</th>
-                <th>Aktionen</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for goal in goals %}
-            <tr>
-                <td>{{ goal['department'] }}</td>
-                <td>{{ goal['statement'] }}</td>
-                <td>{{ goal['criteria'] }}</td>
-                <td>{{ goal['rating'] }}</td>
-                <td>{{ goal['last_modified'] }}</td>
-                <td>
-                    <a href="{{ url_for('goal.update', goal_id=goal['id']) }}">Bearbeiten</a> |
-                    <form action="{{ url_for('goal.delete', goal_id=goal['id']) }}" method="post" style="display:inline;">
-                        <button type="submit">Löschen</button>
-                    </form>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <div class="goal-header">
+        <h1>Ziele Übersicht</h1>
+        <a href="{{ url_for('goal.create') }}" class="btn btn-primary">Neues Ziel anlegen</a>
+    </div>
+    <div class="goal-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Abteilung</th>
+                    <th>Aussage</th>
+                    <th>Kriterien</th>
+                    <th>Bewertung</th>
+                    <th>Letzte Änderung</th>
+                    <th>Aktionen</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for goal in goals %}
+                <tr>
+                    <td>{{ goal['department'] }}</td>
+                    <td>{{ goal['statement'] }}</td>
+                    <td>{{ goal['criteria'] }}</td>
+                    <td>{{ goal['rating'] }}</td>
+                    <td>{{ goal['last_modified'] }}</td>
+                    <td>
+                        <a href="{{ url_for('goal.update', goal_id=goal['id']) }}">Bearbeiten</a> |
+                        <form action="{{ url_for('goal.delete', goal_id=goal['id']) }}" method="post" style="display:inline;">
+                            <button type="submit">Löschen</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
     <div class="graph-container">
         <canvas id="goalChart"></canvas>
     </div>

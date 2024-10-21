@@ -7,12 +7,12 @@
     <h2>Registrieren</h2>
     <form method="POST" action="{{ url_for('auth.register') }}">
         <label for="username">Benutzername</label>
-        <input type="text" name="username" required>
+        <input type="text" name="username" class="spacing" required>
         
         <label for="password">Passwort</label>
-        <input type="password" name="password" required>
+        <input type="password" name="password" class="spacing" required>
         
-        <button type="submit">Registrieren</button>
+        <button type="submit" class="btn--spacing">Registrieren</button>
     </form>
     <p>Bereits registriert? <a href="{{ url_for('auth.login') }}">Anmelden</a></p>
 </div>
