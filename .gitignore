@@ -20,3 +20,5 @@ instance/
 
 # Environment Variables
 .env
+
+stuff/
