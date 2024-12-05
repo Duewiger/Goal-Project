@@ -1,4 +1,4 @@
-# TEXSIB - 10x Goals Project
+10x Goals Project
 
 ## Übersicht
 
